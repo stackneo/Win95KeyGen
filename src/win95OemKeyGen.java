@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class win95OemKeyGen {
     //Random instance
@@ -14,9 +15,19 @@ public class win95OemKeyGen {
         return Integer.toString(combo);
     }
     //Concatenates a year onto the string.
-    //TODO: Implement year between 95-2003. (Could do through input).
     private String genYear(String key) {
-        return key + "95";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter a year between 1995-2002 (95-02): ");
+        int year = input.nextInt();
+        if (year == 01 || year == 02) {
+            String key_year = "0" + year;
+            return key + key_year;
+        }
+        else if(year < 95 || year > 99 ){
+            System.out.println("Invalid year!");
+            genYear(key);
+        }
+        return key + year;
     }
 
     //Concatenates OEM to key.
