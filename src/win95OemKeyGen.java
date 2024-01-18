@@ -14,7 +14,7 @@ public class win95OemKeyGen {
         int combo = rand.nextInt((max-min)+1)+min;
         return Integer.toString(combo);
     }
-    //Concatenates a year onto the string.
+    //Concatenates a year onto the string through user input.
     private String genYear(String key) {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a year between 1995-2002 (95-02): ");
