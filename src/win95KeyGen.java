@@ -1,5 +1,6 @@
 import java.util.*;
 
+//TODO: Rely less on recursion.
 public class win95KeyGen {
     //Random instance
     Random rand = new Random();
@@ -44,24 +45,27 @@ public class win95KeyGen {
            return key + nums;
         }
         else {
-            seven_numbers(key);
+            return "Invalid key!";
         }
-        return "Try Again!";
     }
 
-    //Runs all methods and returns key.
-    public String generate_key() {
+    //Runs all methods.
+    public void generate_key() {
         String key;
         key = genValidCombo();
         key = addHyphen(key);
         key = seven_numbers(key);
-        return key;
-
+        if (key.equals("Invalid key!")) {
+            generate_key();
+        }
+        else {
+            System.out.println("Your key is: " + key);
+        }
     }
     //Generates new method and output
     public static void main(String[] args) {
         win95KeyGen generatedKey = new win95KeyGen();
-        System.out.println(generatedKey.generate_key());
+        generatedKey.generate_key();
 
     }
 }
