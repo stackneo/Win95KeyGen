@@ -38,7 +38,7 @@ public class win95KeyGen {
         for(int j = 0; j < seven_numbers.size(); j++){
             sum += seven_numbers.get(j);
         }
-        if(sum % 7 == 0){
+        if(sum*7 % 7 == 0){
            for (Integer item : seven_numbers){
                nums += item.toString();
            };

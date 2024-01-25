@@ -14,7 +14,7 @@ public class win95OemKeyGen {
         int combo = rand.nextInt((max-min)+1)+min;
         return Integer.toString(combo);
     }
-    //Concatenates a year onto the string through user input.
+    //Concatenates a year onto the string.
     private String genYear(String key) {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a year between 1995-2002 (95-02): ");
@@ -49,29 +49,33 @@ public class win95OemKeyGen {
         for(int j = 0; j < seven_numbers.size(); j++){
             sum += seven_numbers.get(j);
         }
-        if(sum % 7 == 0){
+        if(sum*7 % 7 == 0){
             for (Integer item : seven_numbers){
                 nums += item.toString();
             };
             return key + nums;
         }
         else {
-            nums(key);
+            return "Invalid key";
         }
-        return "Try Again!";
     }
-    public String generate_key() {
+    public void generate_key() {
         String key;
         key = genDay();
         key = genYear(key);
         key = OEM(key);
         key = nums(key);
-        return key;
+        if (key.equals("Invalid key!")) {
+            generate_key();
+        }
+        else {
+            System.out.println("Your key is: " + key);
+        }
 
     }
     public static void main(String[] args) {
         win95OemKeyGen key = new win95OemKeyGen();
-        System.out.println(key.generate_key());
+        key.generate_key();
 
     }
 }
