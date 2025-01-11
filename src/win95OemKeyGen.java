@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class win95OemKeyGen {
     //Random instance
@@ -12,23 +9,13 @@ public class win95OemKeyGen {
         int min = 001;
         int max = 366;
         int combo = rand.nextInt((max-min)+1)+min;
-        return Integer.toString(combo);
+        return String.format("%03d", combo);
     }
     //Concatenates a year onto the string.
     private String genYear(String key) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter a year between 1995-2002 (95-02): ");
-        int year = input.nextInt();
-        if (year == 01 || year == 02) {
-            String key_year = "0" + year;
-            return key + key_year;
+            ArrayList<String> valid_years = new ArrayList<>(Arrays.asList("95","96","97","98","99","00","01","02"));
+            return key + valid_years.get(rand.nextInt(valid_years.size()));
         }
-        else if(year < 95 || year > 99 ){
-            System.out.println("Invalid year!");
-            genYear(key);
-        }
-        return key + year;
-    }
 
     //Concatenates OEM to key.
     private String OEM(String key) {
@@ -36,41 +23,45 @@ public class win95OemKeyGen {
     }
 
     //Mostly the same as the old keygen, except nums has to start with "00" for it to be a valid key.
-    private String nums(String key) {
-       String nums = "00";
+    private String mult7(String key) {
+       StringBuilder nums = new StringBuilder("00");
         int sum = 0;
         List<Integer> seven_numbers = new ArrayList<>();
-        int i = 0;
-        while (i < 5) {
+        for (int i = 0; i < 5; i++) {
             int number = rand.nextInt(9);
             seven_numbers.add(number);
-            i += 1;
+            sum += number;
         }
-        for(int j = 0; j < seven_numbers.size(); j++){
-            sum += seven_numbers.get(j);
-        }
-        if(sum*7 % 7 == 0){
+        if(sum % 7 == 0){
             for (Integer item : seven_numbers){
-                nums += item.toString();
+                nums.append(item.toString());
             };
             return key + nums;
         }
-        else {
-            return "Invalid key";
+        return "Invalid key";
+    }
+
+    public String randomNums(String key) {
+        StringBuilder nums = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            nums.append(String.valueOf(rand.nextInt(10)));
         }
+        return key + "-" + nums;
     }
     public void generate_key() {
-        String key;
-        key = genDay();
-        key = genYear(key);
-        key = OEM(key);
-        key = nums(key);
-        if (key.equals("Invalid key!")) {
-            generate_key();
+        String key = "";
+        boolean validKey = false;
+        while (!validKey) {
+            key = genDay();
+            key = genYear(key);
+            key = OEM(key);
+            key = mult7(key);
+            if (!key.equals("Invalid key")) {
+                validKey = true;
+                key = randomNums(key);
+            }
         }
-        else {
-            System.out.println("Your key is: " + key);
-        }
+        System.out.println("Your key is: " + key);
 
     }
     public static void main(String[] args) {
